@@ -1,0 +1,10 @@
+{
+  "name": "Algolia",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "algoliasearch": "^4.23.3",
+    "dotenv": "^16.4.5"
+  }
+}
