@@ -1,12 +1,15 @@
 require('dotenv').config()
 const algoliaSearch = require('algoliasearch')
 
+const { Client } = require('pg')
+
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID
 const ALGOLIA_APP_KEY = process.env.ALGOLIA_APP_KEY
 
 const algoliaClient = algoliaSearch(ALGOLIA_APP_ID, ALGOLIA_APP_KEY)
+const pgClient = new Client({ database: 'postgres' })
 
-const index = algoliaClient.initIndex('dev_TEST_SDK_JS')
+const index = algoliaClient.initIndex('dev_PRODUCTS')
 index.setSettings({})
 
 //save one
@@ -90,12 +93,36 @@ const saveMany = async () => {
 
 //save many from JSON FILE
 
-const saveManyJSON = async () => {
-  const employees = require('./employees.json')
-  const result = await index.saveObjects(employees, {
+// const saveManyJSON = async () => {
+//   const employees = require('./employees.json')
+//   const result = await index.saveObjects(employees, {
+//     autoGenerateObjectIDIfNotExist: true,
+//   })
+//   console.log({ result })
+// }
+
+// saveManyJSON().catch((err) => console.log(err))
+
+// const saveFromDB = async () => {
+//   pgClient.connect()
+
+//   const queryResult = await pgClient.query('SELECT * FROM EMPLOYEE_small')
+//   const result = await index.saveObjects(queryResult.rows, {
+//     autoGenerateObjectIDIfNotExist: true,
+//   })
+//   console.log({ result })
+
+//   pgClient.end()
+// }
+
+// // saveFromDB().catch((err) => console.log(err))
+
+const saveManyJSONProducts = async () => {
+  const products = require('./data/products.json')
+  const result = await index.saveObjects(products, {
     autoGenerateObjectIDIfNotExist: true,
   })
   console.log({ result })
 }
 
-saveManyJSON().catch((err) => console.log(err))
+saveManyJSONProducts().catch((err) => console.log(err))

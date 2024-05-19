@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdn.jsdelivr.net/npm/algoliasearch@4.23.3/dist/algoliasearch-lite.umd.js"
+      integrity="sha256-1QNshz86RqXe/qsCBldsUu13eAX6n/O98uubKQs87UI="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      const app = document.getElementById('app')
+      const algolia = algoliasearch(
+        'AOPCBKIF57',
+        'a3c06d466cb7928c2fad91c1038de6ab'
+      )
+      const index = algolia.initIndex('dev_TEST_SDK_JS')
+      index.search('Alber').then((result) => {
+        console.log({ result })
+        const hits = result.hits.map(
+          (hit) =>
+            `<p>${hit._highlightResult.firstName.value.replace(
+              'em',
+              'mark'
+            )}</p>`
+        )
+        app.innerHTML = hits.join('')
+        console.log({ hits })
+      })
+    </script>
+  </body>
+</html>
