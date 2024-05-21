@@ -18,19 +18,27 @@
         'AOPCBKIF57',
         'a3c06d466cb7928c2fad91c1038de6ab'
       )
-      const index = algolia.initIndex('dev_TEST_SDK_JS')
-      index.search('Alber').then((result) => {
-        console.log({ result })
-        const hits = result.hits.map(
-          (hit) =>
-            `<p>${hit._highlightResult.firstName.value.replace(
-              'em',
-              'mark'
-            )}</p>`
-        )
-        app.innerHTML = hits.join('')
-        console.log({ hits })
-      })
+      const index = algolia.initIndex('dev_PRODUCTS')
+      index
+        .search('', {
+          facetFilters: [
+            ['price_range:200 - 500', 'price_range:1 - 50'], // si tiene doble corchete quiere decir que su consulta es de tipo or, mientras que si esta separado por coma es un &
+            // 'price_range:200 - 500', // si tiene doble corchete quiere decir que su consulta es de tipo or, mientras que si esta separado por coma es un &
+            'brand:Apple',
+            // 'type:Google os',
+          ],
+        })
+        .then((result) => {
+          const hits = result.hits.map(
+            (hit) =>
+              `<p>${hit._highlightResult.name.value.replace('em', 'mark')}
+              - ${hit.price}
+              - ${hit.price_range}
+            </p>`
+          )
+          app.innerHTML = hits.join('')
+          console.log({ hits })
+        })
     </script>
   </body>
 </html>
